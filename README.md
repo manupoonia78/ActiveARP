@@ -2,14 +2,17 @@
 Prevention and Detection of Man in the Middle Attack using Active ARP Monitoring
 
 </pre>
-dev = pcap_lookupdev(errbuf);
-if(dev == NULL) {
+dev = pcap_lookupdev(errbuf);  
+
+if(dev == NULL)
+{
 fprintf(stderr, "%s\n", errbuf);
 exit(1);
 }
-
 pcap_lookupnet(dev, &netp, &maskp, errbuf);
+
 descr = pcap_open_live(dev, BUFSIZ, 1,-1, errbuf);
+
 if(descr == NULL) {
 printf("pcap_open_live(): %s\n", errbuf);
 exit(1);
