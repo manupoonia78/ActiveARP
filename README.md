@@ -7,20 +7,24 @@ if(dev == NULL) {
 fprintf(stderr, "%s\n", errbuf);
 exit(1);
 }
+
 pcap_lookupnet(dev, &netp, &maskp, errbuf);
 descr = pcap_open_live(dev, BUFSIZ, 1,-1, errbuf);
 if(descr == NULL) {
 printf("pcap_open_live(): %s\n", errbuf);
 exit(1);
 }
+
 if(pcap_compile(descr, &fp, "arp", 0, netp) == -1) {
 fprintf(stderr, "Error calling pcap_compile\n");
 exit(1);
 }
+
 if(pcap_setfilter(descr, &fp) == -1) {
 fprintf(stderr, "Error setting filter\n");
 exit(1);
 }
+
 pcap_loop(descr, -1, my_callback, NULL);
 return 0;
 <pre>
@@ -54,6 +58,7 @@ strcat(arp_source, f);
 if(i != 27)
 strcat(arp_source, ":");
 }
+
 if(i >= 28 && i<= 31){
 //Daca el vrea sa si schimbe ip ul lui si exista deja in arp, blocheaza!
 char h[8];
@@ -62,7 +67,9 @@ strcat(arp_ip_source, h);
 if(i != 31)
 strcat(arp_ip_source, ".");
 }
+
 }
+
 char attacker_ip[128] = "";
 if(strncmp(arp_source, gtwy, 20) != 0){
 //Check if ARP Source IP is GATEWAY
