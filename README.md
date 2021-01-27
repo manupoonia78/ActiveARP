@@ -1,5 +1,5 @@
 # ActiveARP
-Prevention and Detection of Man in the Middle Attack using Active ARP Monitoring
+## Prevention and Detection of Man in the Middle Attack using Active ARP Monitoring
 
 </pre>
 dev = pcap_lookupdev(errbuf);  
@@ -46,7 +46,6 @@ char arp_ip_source[128] = "";
 for(i=0;i<pkthdr->len;i++) {
 if(i >= 6 && i<= 11){
 
-//Daca el vrea sa si schimbe ip ul lui si exista deja in arp, blocheaza!
 char j[8];
 snprintf(j, sizeof(j), "%02x", packet[i]);
 strcat(p_source, j);
@@ -54,7 +53,7 @@ if (i != 11)
 strcat(p_source, ":");
 }
 if(i >= 22 && i<= 27){
-//Daca el vrea sa si schimbe ip ul lui si exista deja in arp, blocheaza!
+
 char f[8];
 snprintf(f, sizeof(f), "%02x", packet[i]);
 strcat(arp_source, f);
@@ -63,7 +62,6 @@ strcat(arp_source, ":");
 }
 
 if(i >= 28 && i<= 31){
-//Daca el vrea sa si schimbe ip ul lui si exista deja in arp, blocheaza!
 char h[8];
 snprintf(h, sizeof(h), "%d", packet[i]);
 strcat(arp_ip_source, h);
@@ -75,8 +73,10 @@ strcat(arp_ip_source, ".");
 
 char attacker_ip[128] = "";
 if(strncmp(arp_source, gtwy, 20) != 0){
+
 //Check if ARP Source IP is GATEWAY
 if(strncmp(arp_ip_source, gateway_ip, 20) == 0){
+
 //MALICIOUS ARP PACKET!
 printf("\x1B[31m MALICIOUS ARP PACKET DETECTED FROM
 %s.\x1B[37m\n", p_source);
@@ -86,10 +86,8 @@ rearpGateway(gtwy, gateway_ip);
 }
 }
 <pre>
-The function blockARPPackets() will block all ARP packets coming from that MAC
-Address using arptables and the function rearpGateway() will re-arp the Gateway’s MAC
-which was saved when starting the script to its original IP address, in case the malicious
-ARP packet was acknowledged. The functions look like this:
+The function blockARPPackets() will block all ARP packets coming from that MAC Address using ARP-tables and the function rearpGateway() will re-ARP the Gateway’s MAC
+which was saved while starting the script to its original IP address, in case the malicious ARP packets were acknowledged. The functions look like this :
 
 void blockARPPackets(char* mac_address){
 FILE *fp;
@@ -108,6 +106,7 @@ printf("%sBLOCKING PACKETS FROM %s%s\n", KGRN, mac_address,
 KWHT);
 }
 void rearpGateway(char* gateway_mac, char* gateway_ip){
+
 //arp -s 10.0.0.2 00:0c:29:c0:94:bf
 FILE *fp;
 char path[1035];
